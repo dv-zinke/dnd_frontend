@@ -16,7 +16,7 @@
     .top_content {
         background: #c7f4ef;
         width:100%;
-        height: 250px;
+        height: 300px;
         position: relative;
         .bell_icon {
             position: absolute;

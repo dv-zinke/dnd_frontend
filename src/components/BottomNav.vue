@@ -6,23 +6,23 @@
                 class="bottom-nav"
                 color="#3ad9ac"
                 fixed
-                width="360"
+                width="400"
         >
-            <v-btn>
+            <v-btn to="/">
                 <span>홈</span>
                 <v-icon>mdi-home-outline</v-icon>
             </v-btn>
 
-            <v-btn>
+            <v-btn to="/community">
                 <span>우리동네</span>
                 <v-icon>mdi-emoticon-happy-outline</v-icon>
             </v-btn>
 
-            <v-btn>
+            <v-btn to="/map">
                 <span>지도</span>
                 <v-icon>mdi-map-marker-outline</v-icon>
             </v-btn>
-            <v-btn>
+            <v-btn to="/mypage">
                 <span>마이페이지</span>
                 <v-icon>mdi-account-outline</v-icon>
             </v-btn>
@@ -47,8 +47,9 @@
         left: 0;
         right: 0;
         padding: 0;
+        box-shadow: 0 -5px 5px -5px rgba(0, 0, 0, 0.2) !important;
     }
-    .bottom-nav button {
+    .bottom-nav a {
         width : 50px !important;
         height: inherit !important;
         margin-right: 20px;

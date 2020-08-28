@@ -24,7 +24,7 @@
 
     .container {
         width:400px !important;
-        padding: 0px 20px 0px 20px !important;
+        padding: 0!important;
         margin: auto;
         box-sizing: border-box;
     }
