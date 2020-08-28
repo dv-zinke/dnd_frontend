@@ -1,12 +1,14 @@
 <template>
     <div>
-        마이페이지
+        <Mypage/>
     </div>
 </template>
 
 <script>
+    import Mypage from "../components/mypage/Mypage";
     export default {
-        name: "MypagePage"
+        name: "MypagePage",
+        components: {Mypage}
     }
 </script>
 
