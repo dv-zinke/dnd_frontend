@@ -1,12 +1,14 @@
 <template>
     <div>
-        main
+        <Main />
     </div>
 </template>
 
 <script>
+    import Main from "../components/main/Main";
     export default {
-        name: "MainPage"
+        name: "MainPage",
+        components: {Main}
     }
 </script>
 
