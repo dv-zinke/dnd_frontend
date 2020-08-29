@@ -35,7 +35,14 @@
         name: "BottomNav",
         data() {
             return {
-                activeBtn: 1
+                activeBtn: null
+            }
+        },
+        mounted() {
+        },
+        methods: {
+            getActive() {
+
             }
         },
     }

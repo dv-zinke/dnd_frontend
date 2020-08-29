@@ -1,7 +1,10 @@
 <template>
     <div>
-        <main-top-content/>
-        <main-content/>
+        <div>
+            <main-top-content/>
+            <main-content/>
+        </div>
+
     </div>
 </template>
 
@@ -10,7 +13,18 @@
     import MainTopContent from "./MainTopContent";
     export default {
         name: "Main",
-        components: {MainTopContent, MainContent}
+        components: {MainTopContent, MainContent},
+        data() {
+            return {
+                isLoad: false
+            }
+        },
+        mounted() {
+            this.getContent();
+        },
+        methods: {
+
+        },
     }
 </script>
 
