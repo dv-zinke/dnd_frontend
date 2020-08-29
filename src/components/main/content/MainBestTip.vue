@@ -7,9 +7,15 @@
                     v-for="item in 4"
                     :key="item"
             >
-                <span class="hash_tag">
-                    #ㅇㅇㅇ
-                </span>
+                <v-chip
+                        class="hash_tag"
+                        color="#F87948"
+                        text-color="black"
+                        outlined
+                        small
+                >
+                    #청소
+                </v-chip>
                 <span class="list_text">
                     dfgdfjgnjdkfgnkdfjgnjdfkgㅇㄹㅎㄹㅎㅇㄹㅎㅇ
                 </span>
@@ -53,11 +59,7 @@
                 position: absolute;
                 right: 3px;
             }
-            .hash_tag {
-                border:1px solid #e98058;
-                border-radius: 15px;
-                padding: 2px 5px;
-            }
+
         }
 
 

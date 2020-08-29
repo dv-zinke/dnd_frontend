@@ -1,12 +1,14 @@
 <template>
     <div>
-        write
+        <write></write>
     </div>
 </template>
 
 <script>
+    import Write from "../components/write/Write";
     export default {
-        name: "WritePage"
+        name: "WritePage",
+        components: {Write}
     }
 </script>
 

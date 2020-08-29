@@ -20,10 +20,12 @@
             </div>
 
             <div class="write">
-                <v-icon class="icon">
-                    mdi-square-edit-outline
-                </v-icon>
-                <span>꿀팁 공유하러 가기</span>
+                <div @click="goWrite()">
+                    <v-icon class="icon">
+                        mdi-square-edit-outline
+                    </v-icon>
+                    <span>꿀팁 공유하러 가기</span>
+                </div>
             </div>
 
             <v-container fluid>
@@ -89,6 +91,11 @@
                     { title: 'Best airlines3', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
                     { title: 'Best airlines4', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
                 ],
+            }
+        },
+        methods: {
+            goWrite() {
+                this.$router.push({name: 'Write'})
             }
         },
     }

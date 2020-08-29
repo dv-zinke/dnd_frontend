@@ -20,6 +20,24 @@
                </v-row>
            </v-container>
        </div>
+
+        <v-snackbar
+                v-model="modal"
+                :top="true"
+        >
+            추가되지않은 카테고리입니다.
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                        color="pink"
+                        text
+                        v-bind="attrs"
+                        @click="modal = false"
+                >
+                    Close
+                </v-btn>
+            </template>
+        </v-snackbar>
     </v-container>
 </template>
 
@@ -28,14 +46,17 @@
         name: "MainContentCategory",
         data() {
             return {
-                titles: ["청소", "화장실", "법률", "분리수거", "이사", "요리", "애완견", ""]
+                titles: ["청소", "화장실", "법률", "분리수거", "이사", "요리", "애완견", ""],
+                modal:false
             }
         },
         methods: {
             goCategory(name) {
-                if(!name) return alert("기다려주세용");
-                console.log(name)
+                if(!name) return this.openModal();
                 this.$router.push({name: 'Category', query: {title: name}})
+            },
+            openModal(){
+                this.modal = true;
             }
         },
     }

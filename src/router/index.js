@@ -29,6 +29,7 @@ export default new VueRouter({
         {
             path: '/write',
             component: WritePage,
+            name: "Write"
         },
         {
             path: '/signup',
@@ -39,10 +40,6 @@ export default new VueRouter({
             component: CategoryPage,
             name: "Category",
             props: true
-        },
-        {
-            path: "/write",
-            component : WritePage
         }
 
     ],
