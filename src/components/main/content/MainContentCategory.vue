@@ -9,6 +9,7 @@
                            :key="n"
                            cols="3"
                            class="category"
+                           @click="goCategory(titles[n-1])"
                    >
                        <v-img
                                :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
@@ -28,6 +29,13 @@
         data() {
             return {
                 titles: ["청소", "화장실", "법률", "분리수거", "이사", "요리", "애완견", ""]
+            }
+        },
+        methods: {
+            goCategory(name) {
+                if(!name) return alert("기다려주세용");
+                console.log(name)
+                this.$router.push({name: 'Category', query: {title: name}})
             }
         },
     }

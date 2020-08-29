@@ -20,7 +20,6 @@
             }
         },
         mounted() {
-            this.getContent();
         },
         methods: {
 

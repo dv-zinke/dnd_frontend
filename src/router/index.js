@@ -5,7 +5,7 @@ import SignupPage from "../pages/SignupPage";
 import CommunityPage from "../pages/CommunityPage";
 import MapPage from "../pages/MapPage";
 import MypagePage from "../pages/MypagePage";
-
+import CategoryPage from "../pages/CategoryPage";
 
 
 export default new VueRouter({
@@ -33,7 +33,21 @@ export default new VueRouter({
         {
             path: '/signup',
             component: SignupPage,
+        },
+        {
+            path: '/category',
+            component: CategoryPage,
+            name: "Category",
+            props: true
+        },
+        {
+            path: "/write",
+            component : WritePage
         }
-    ]
+
+    ],
+    scrollBehavior() {
+        return {x: 0, y: 0}
+    }
 });
 
