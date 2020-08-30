@@ -35,7 +35,9 @@
                             :key="card.title"
                             :cols="card.flex"
                     >
-                        <v-card>
+                        <v-card
+                                @click="goRead()"
+                        >
                             <v-img
                                     :src="card.src"
                                     class="white--text align-end"
@@ -96,6 +98,9 @@
         methods: {
             goWrite() {
                 this.$router.push({name: 'Write'})
+            },
+            goRead() {
+                this.$router.push({name: 'Read', query: {document_id: "2"}})
             }
         },
     }

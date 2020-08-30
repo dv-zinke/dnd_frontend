@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container v-if="isLoad">
         <v-container class="header">
             <v-icon @click="$router.go(-1)" class="close_btn">
                 mdi-close
@@ -13,7 +13,15 @@
             </v-btn>
         </v-container>
         <Viewer :initialValue="viewerText" height="400px"  />
+        <v-divider></v-divider>
         <comment />
+    </v-container>
+    <v-container v-else>
+        <v-progress-circular
+                indeterminate
+                class="progress"
+                color="primary"
+        ></v-progress-circular>
     </v-container>
 </template>
 
@@ -21,6 +29,8 @@
 
     import { Viewer } from '@toast-ui/vue-editor';
     import Comment from "./Comment";
+    import WriteApi from "../api/WriteApi";
+    import axios from 'axios';
     export default {
         name: "Read",
         components: {
@@ -29,16 +39,42 @@
         },
         data() {
             return {
-                viewerText: '# This is Viewer.\n Hello World.'
+                isLoad:false,
+                viewerText: ''
             };
         },
         mounted() {
+            this.getDocument();
+        },
+        methods: {
+            getDocument() {
+                console.log(this.getDocumentId);
+                WriteApi().getDocumentById(this.getDocumentId)
+                    .then(({data}) =>{
+                        this.viewerText += `# ${data.title} \n`;
+                        return axios.get(data.last_version.data_url)
+                    })
+                    .then(res =>{
+                        this.viewerText += res.data;
+                        this.isLoad =true;
+                    })
 
-        }
+            }
+        },
+        computed: {
+            getDocumentId() {
+                return this.$route.query.document_id;
+            }
+        },
     }
 </script>
 
 <style scoped lang="scss">
+    .progress {
+        margin: 250px auto 0px auto;
+        text-align: center;
+        display: block;
+    }
     .header {
         position: relative;
         text-align: center;

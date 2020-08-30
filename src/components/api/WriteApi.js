@@ -14,6 +14,10 @@ class WriteApi {
     getAllDocument() {
         return this.http.get(`document`);
     }
+
+    getDocumentById(id) {
+        return this.http.get(`/document/${id}`)
+    }
 }
 
 
