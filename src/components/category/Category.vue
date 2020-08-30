@@ -97,7 +97,9 @@
         },
         methods: {
             goWrite() {
-                this.$router.push({name: 'Write'})
+                if(!this.title && typeof this.title !== "string") return;
+                const title = this.title.toString();
+                this.$router.push({name: 'Write', query: {category: title}})
             },
             goRead() {
                 this.$router.push({name: 'Read', query: {document_id: "2"}})

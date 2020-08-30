@@ -30,7 +30,8 @@ export default new VueRouter({
         {
             path: '/write',
             component: WritePage,
-            name: "Write"
+            name: "Write",
+            props:true
         },
         {
             path: '/signup',

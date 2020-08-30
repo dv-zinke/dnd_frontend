@@ -15,10 +15,10 @@
         <v-row class="text-field">
             <v-col cols="8">
                 <v-file-input
-                        class="image_input"
                         @change="Preview_image"
-                        v-model="image"
+                        class="image_input"
                         prefix="미리보기 :"
+                        v-model="image"
                 >
                 </v-file-input>
             </v-col>
@@ -28,17 +28,21 @@
                 </div>
             </v-col>
 
-
             <v-text-field
+                    @click:append-outer="hashtagAdd"
+                    append-outer-icon="mdi-plus"
                     class="tag_input"
+                    clearable
                     prefix="태그 입력:"
+                    v-model="hashtagInput"
 
             >
             </v-text-field>
+
             <v-container v-if="!isNotExistHashtag">
                 <v-chip
                         :key="hashtag"
-                        @click:close="test = false"
+                        @click:close="hashtagRemove(hashtag)"
                         close
                         small
                         v-for="hashtag in hashtags"
@@ -47,6 +51,7 @@
                 </v-chip>
             </v-container>
             <v-text-field
+                    v-model="title"
                     class="title_input"
                     prefix="제목 :"
             ></v-text-field>
@@ -70,11 +75,20 @@
 
     export default {
         name: "Write",
+        props: {
+            category: {
+                type: String,
+                required: false,
+                default: "청소"
+            },
+        },
         components: {
             Editor
         },
         data() {
             return {
+                title:"",
+                hashtagInput: "",
                 editorText: '',
                 editorOptions: {
                     hideModeSwitch: true
@@ -84,24 +98,51 @@
                 hashtags: [],
                 url: null,
                 image: null,
+                image_base64: null
             }
         },
         mounted() {
-
         },
         methods: {
             createDocument() {
-                WriteApi().getAllDocument().then(d => {
-                    console.log(d)
+
+                const request = {
+                    "document": {
+                        "category": this.getCategory,
+                        "title": this.title
+                    },
+                    "content": this.$refs.toastuiEditor.invoke('getMarkdown'),
+                    "hashtags": this.hashtags,
+                    "thumbnail": this.image_base64
+                };
+                WriteApi().createDocument(request).then(res => {
+                    this.$router.push({name: 'Read', query: {document_id: res.data.id}})
                 })
             },
             Preview_image() {
+                const reader = new FileReader();
+                reader.readAsDataURL(this.image);
+                reader.onload = ()=>{
+                    this.image_base64 = reader.result
+                };
+
                 this.url = URL.createObjectURL(this.image)
+            },
+            hashtagAdd() {
+                if (!this.hashtagInput) return;
+                this.hashtags.push(this.hashtagInput);
+                this.hashtagInput = "";
+            },
+            hashtagRemove(hashtag) {
+                this.hashtags = this.hashtags.filter(tag => tag !== hashtag);
             }
         },
         computed: {
             isNotExistHashtag() {
                 return this.hashtags.length === 0;
+            },
+            getCategory() {
+                return this.$route.query.category;
             }
         },
     }
@@ -133,11 +174,13 @@
             height: 40px;
             width: 100%;
         }
+
         .image_input {
             height: 20px;
         }
+
         .prevview {
-            width:40px;
+            width: 40px;
             height: 40px;
         }
     }
