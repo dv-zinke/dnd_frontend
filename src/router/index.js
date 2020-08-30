@@ -6,6 +6,7 @@ import CommunityPage from "../pages/CommunityPage";
 import MapPage from "../pages/MapPage";
 import MypagePage from "../pages/MypagePage";
 import CategoryPage from "../pages/CategoryPage";
+import ReadPage from "../pages/ReadPage";
 
 
 export default new VueRouter({
@@ -40,7 +41,13 @@ export default new VueRouter({
             component: CategoryPage,
             name: "Category",
             props: true
-        }
+        },
+        {
+            path: '/read',
+            component: ReadPage,
+            name: "Read",
+            props:true
+        },
 
     ],
     scrollBehavior() {

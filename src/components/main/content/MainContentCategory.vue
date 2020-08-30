@@ -1,38 +1,44 @@
 <template>
     <v-container class="category_container">
-       <span class="title">카테고리 모아보기</span>
-       <div>
-           <v-container fluid>
-               <v-row>
-                   <v-col
-                           v-for="n in 8"
-                           :key="n"
-                           cols="3"
-                           class="category"
-                           @click="goCategory(titles[n-1])"
-                   >
-                       <v-img
-                               :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
-                               class="radius-card"
-                       ></v-img>
-                       <p class="category_title" v-text="titles[n-1]"></p>
-                   </v-col>
-               </v-row>
-           </v-container>
-       </div>
+        <span class="title">카테고리 모아보기</span>
+        <div>
+            <v-container fluid>
+                <v-row>
+                    <v-col
+                            :key="n"
+                            @click="goCategory(category[n-1].title)"
+                            class="category"
+                            cols="3"
+                            v-for="n in 8"
+                    >
+                        <v-avatar
+                                color="#c7f4ef"
+                        >
+                            <v-img
+                                    :src="require(`@/assets/category/${category[n-1].src}`)"
+                                    max-width="40"
+                                    max-height="40"
+                            >
+                            </v-img>
+                        </v-avatar>
+                        <p class="category_title mr-4" v-text="category[n-1].title"></p>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </div>
 
         <v-snackbar
-                v-model="modal"
                 :top="true"
+                v-model="modal"
         >
             추가되지않은 카테고리입니다.
 
             <template v-slot:action="{ attrs }">
                 <v-btn
+                        @click="modal = false"
                         color="pink"
                         text
                         v-bind="attrs"
-                        @click="modal = false"
                 >
                     Close
                 </v-btn>
@@ -46,36 +52,65 @@
         name: "MainContentCategory",
         data() {
             return {
-                titles: ["청소", "화장실", "법률", "분리수거", "이사", "요리", "애완견", ""],
-                modal:false
+                category: [{
+                    title: "청소",
+                    src: "cleaning.png"
+                }, {
+                    title: "화장실",
+                    src:"washroom.png"
+                }, {
+                    title: "법률",
+                    src:"law.png"
+                }, {
+                    title: "분리수거",
+                    src:"trash_sort.png"
+                },{
+                    title: "이사",
+                    src:"move.png"
+                },{
+                    title: "요리",
+                    src:"cooking.png"
+                }, {
+                    title: "애완",
+                    src:"pet.png"
+                }, {
+                    title: "",
+                    src:"none.png"
+                }],
+                modal: false
             }
         },
         methods: {
             goCategory(name) {
-                if(!name) return this.openModal();
+                if (!name) return this.openModal();
                 this.$router.push({name: 'Category', query: {title: name}})
             },
-            openModal(){
+            openModal() {
                 this.modal = true;
             }
         },
     }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
     .category_container {
         border-bottom: 1px solid #ddd;
+
         .title {
             font-weight: bold;
         }
+
         .radius-card {
             border-radius: 50%;
             overflow: hidden;
+            width: 50px;
         }
+
         .category {
             padding: 15px;
-            height:70px;
+            height: 70px;
         }
+
         .category_title {
             text-align: center;
             font-size: 12px;

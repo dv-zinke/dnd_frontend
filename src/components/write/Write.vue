@@ -5,13 +5,29 @@
                 mdi-close
             </v-icon>
             <span>꿀팁 공유</span>
-            <v-btn class="complete_btn"
+            <v-btn @click="createDocument()"
+                   class="complete_btn"
                    color="primary"
                    small
-                   @click="createDocument()"
-            >완료</v-btn>
+            >완료
+            </v-btn>
         </v-container>
         <v-row class="text-field">
+            <v-col cols="8">
+                <v-file-input
+                        class="image_input"
+                        @change="Preview_image"
+                        v-model="image"
+                        prefix="미리보기 :"
+                >
+                </v-file-input>
+            </v-col>
+            <v-col cols="4">
+                <div class="prevview">
+                    <v-img :src="url"></v-img>
+                </div>
+            </v-col>
+
 
             <v-text-field
                     class="tag_input"
@@ -21,11 +37,11 @@
             </v-text-field>
             <v-container v-if="!isNotExistHashtag">
                 <v-chip
-                        v-for="hashtag in hashtags"
                         :key="hashtag"
+                        @click:close="test = false"
                         close
                         small
-                        @click:close="test = false"
+                        v-for="hashtag in hashtags"
                 >
                     <span>{{hashtag}}</span>
                 </v-chip>
@@ -64,18 +80,23 @@
                     hideModeSwitch: true
                 },
                 editorVisible: true,
-                test:true,
-                hashtags:[]
+                test: true,
+                hashtags: [],
+                url: null,
+                image: null,
             }
         },
         mounted() {
 
         },
         methods: {
-            createDocument(){
-                WriteApi().getAllDocument().then(d =>{
+            createDocument() {
+                WriteApi().getAllDocument().then(d => {
                     console.log(d)
                 })
+            },
+            Preview_image() {
+                this.url = URL.createObjectURL(this.image)
             }
         },
         computed: {
@@ -111,6 +132,13 @@
         .tag_input, .title_input {
             height: 40px;
             width: 100%;
+        }
+        .image_input {
+            height: 20px;
+        }
+        .prevview {
+            width:40px;
+            height: 40px;
         }
     }
 </style>
