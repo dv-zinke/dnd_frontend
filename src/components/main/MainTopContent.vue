@@ -17,7 +17,7 @@
 
 <style scoped lang="scss">
     .top_content {
-        background: #c7f4ef;
+        background: #F4F4E3;
         width:100%;
         height: 300px;
         position: relative;

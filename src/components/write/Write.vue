@@ -13,21 +13,6 @@
             </v-btn>
         </v-container>
         <v-row class="text-field">
-            <v-col cols="8">
-                <v-file-input
-                        @change="Preview_image"
-                        class="image_input"
-                        prefix="미리보기 :"
-                        v-model="image"
-                >
-                </v-file-input>
-            </v-col>
-            <v-col cols="4">
-                <div class="prevview">
-                    <v-img :src="url"></v-img>
-                </div>
-            </v-col>
-
             <v-text-field
                     @click:append-outer="hashtagAdd"
                     append-outer-icon="mdi-plus"
@@ -113,7 +98,7 @@
                     },
                     "content": this.$refs.toastuiEditor.invoke('getMarkdown'),
                     "hashtags": this.hashtags,
-                    "thumbnail": this.image_base64
+                    "thumbnail": ""
                 };
                 WriteApi().createDocument(request).then(res => {
                     this.$router.push({name: 'Read', query: {document_id: res.data.id}})

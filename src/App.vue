@@ -26,6 +26,7 @@
             }
         },
         mounted() {
+            console.log("A");
             this.getContent();
         },
         methods: {

@@ -4,20 +4,20 @@
         <v-list>
             <v-list-item
                     class="list_item"
-                    v-for="item in 4"
-                    :key="item"
+                    v-for="item in newDocument"
+                    :key="item.id"
             >
                 <v-chip
                         class="hash_tag"
-                        color="#F87948"
+                        color="#35CCA2"
                         text-color="black"
                         outlined
                         small
                 >
-                    #청소
+                    #{{item.category}}
                 </v-chip>
                 <span class="list_text">
-                    dfgdfjgnjdkfgnkdfjgnjdfkgㅇㄹㅎㄹㅎㅇㄹㅎㅇ
+                    {{item.title}}
                 </span>
                 <div class="right_icon">
                     N
@@ -28,8 +28,26 @@
 </template>
 
 <script>
+    import WriteApi from "../../api/WriteApi";
+
     export default {
-        name: "MainNewTip"
+        name: "MainNewTip",
+        data() {
+            return {
+                newDocument: []
+            }
+        },
+        mounted() {
+            this.setNewDocument();
+        },
+        methods: {
+            setNewDocument() {
+                WriteApi().getNewDocument().then(res => {
+                    this.newDocument = res.data;
+                    this.$emit("loaded")
+                });
+            }
+        },
     }
 </script>
 
@@ -62,6 +80,7 @@
                 color: white;
                 text-align: center;
                 font-weight: bold;
+                border-radius: 2px;
             }
         }
 
