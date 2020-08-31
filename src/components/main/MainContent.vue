@@ -1,15 +1,6 @@
 <template>
     <div class="content">
-        <v-text-field
-                label="궁금한 점을 해쉬태그로 검색하세요."
-                outlined
-                class="search_bar"
-                color="gray"
-        >
-            <template v-slot:prepend-inner>
-                <v-icon>mdi-magnify</v-icon>
-            </template>
-        </v-text-field>
+        <main-search-bar />
         <main-content-category />
         <main-best-tip />
         <main-new-tip />
@@ -21,9 +12,21 @@
     import MainContentCategory from "./content/MainContentCategory";
     import MainBestTip from "./content/MainBestTip";
     import MainNewTip from "./content/MainNewTip";
+    import MainSearchBar from "./content/MainSearchBar";
     export default {
         name: "MainContent",
-        components: {MainNewTip, MainBestTip, MainContentCategory}
+        components: {MainSearchBar, MainNewTip, MainBestTip, MainContentCategory},
+        data() {
+            return {
+                isBestTipLoad: false,
+                isNewTipLoad: false
+            }
+        },
+        methods: {
+            loaded() {
+
+            }
+        },
     }
 </script>
 
