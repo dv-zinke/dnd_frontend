@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <v-container fluid>
+            <v-container fluid class="cateogry-grid">
                 <v-row dense>
                     <v-col
                             v-for="card in cards"
@@ -140,5 +140,8 @@
         .icon {
             margin-right: 5px;
         }
+    }
+    .cateogry-grid {
+        background: #F9F9F9;
     }
 </style>

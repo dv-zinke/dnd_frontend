@@ -61,11 +61,7 @@
     export default {
         name: "Write",
         props: {
-            category: {
-                type: String,
-                required: false,
-                default: "청소"
-            },
+
         },
         components: {
             Editor
@@ -87,6 +83,7 @@
             }
         },
         mounted() {
+            this.hashtags.push(this.getCategory);
         },
         methods: {
             createDocument() {
@@ -114,7 +111,8 @@
                 this.url = URL.createObjectURL(this.image)
             },
             hashtagAdd() {
-                if (!this.hashtagInput) return;
+                if (!this.hashtagInput || this.hashtags.indexOf(this.hashtagInput) > -1) return;
+
                 this.hashtags.push(this.hashtagInput);
                 this.hashtagInput = "";
             },

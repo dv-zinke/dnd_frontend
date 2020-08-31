@@ -5,23 +5,23 @@
             <v-container fluid>
                 <v-row>
                     <v-col
-                            :key="n"
-                            @click="goCategory(category[n-1].title)"
+                            :key="item.title"
+                            @click="goCategory(item.title)"
                             class="category"
                             cols="3"
-                            v-for="n in 8"
+                            v-for="item in category"
                     >
                         <v-avatar
                                 color="#c7f4ef"
                         >
                             <v-img
-                                    :src="require(`@/assets/category/${category[n-1].src}`)"
+                                    :src="require(`@/assets/category/${item.src}`)"
                                     max-width="40"
                                     max-height="40"
                             >
                             </v-img>
                         </v-avatar>
-                        <p class="category_title mr-4" v-text="category[n-1].title"></p>
+                        <p class="category_title mr-4" v-text="item.title"></p>
                     </v-col>
                 </v-row>
             </v-container>
@@ -71,11 +71,8 @@
                     title: "요리",
                     src:"cooking.png"
                 }, {
-                    title: "애완",
+                    title: "반려동물",
                     src:"pet.png"
-                }, {
-                    title: "",
-                    src:"none.png"
                 }],
                 modal: false
             }
