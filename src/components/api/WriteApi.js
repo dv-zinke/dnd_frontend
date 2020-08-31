@@ -7,7 +7,7 @@ class WriteApi {
     }
     initializeAxios() {
         this.http = axios.create({
-            baseURL: "http://127.0.0.1:9010/api/v1/",
+            baseURL: "http://34.64.176.41:9010/api/v1/",
         });
     }
 
