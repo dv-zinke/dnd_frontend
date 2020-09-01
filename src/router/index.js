@@ -7,6 +7,7 @@ import MapPage from "../pages/MapPage";
 import MypagePage from "../pages/MypagePage";
 import CategoryPage from "../pages/CategoryPage";
 import ReadPage from "../pages/ReadPage";
+import LoginPage from "../pages/LoginPage";
 
 
 export default new VueRouter({
@@ -49,6 +50,12 @@ export default new VueRouter({
             name: "Read",
             props:true
         },
+        {
+            path: '/login',
+            component: LoginPage,
+            name: "Login",
+        }
+
 
     ],
     scrollBehavior() {

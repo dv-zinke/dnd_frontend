@@ -7,7 +7,7 @@ class WriteApi {
     }
     initializeAxios() {
         this.http = axios.create({
-            baseURL: "http://ec2-3-20-222-199.us-east-2.compute.amazonaws.com:9010//api/v1/",
+            baseURL: "http://localhost:9010/api/v1/",
         });
     }
     getBestDocument(){
@@ -22,6 +22,10 @@ class WriteApi {
 
     getDocumentById(id) {
         return this.http.get(`/document/${id}`)
+    }
+
+    getDocumentHashtagByHashtag(tag, page, size) {
+        return this.http.get(`/doc-hashtag?HashtagName=${tag}&page=${page}&size=${size}`)
     }
 
     getContainHashTag(name) {
