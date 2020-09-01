@@ -1,7 +1,17 @@
 <template>
     <v-container class="category_container">
         <span class="title">실시간 인기 꿀팁</span>
-        <v-list>
+        <v-container
+                v-if="!isLoad"
+                class="text-center loading-container"
+        >
+            <v-progress-circular
+                    indeterminate
+                    class="progress text-center ma-auto"
+                    color="primary"
+            ></v-progress-circular>
+        </v-container>
+        <v-list v-else>
             <v-list-item
                     :key="item.id"
                     class="list_item"
@@ -16,7 +26,10 @@
                 >
                     #{{item.category}}
                 </v-chip>
-                <span class="list_text">
+                <span
+                        class="list_text"
+                        @click="goReadPage(item.id)"
+                >
                     {{item.title}}
                 </span>
                 <div class="right_icon">
@@ -40,7 +53,8 @@
         name: "MainBestTip",
         data() {
             return {
-                bestDocument: []
+                bestDocument: [],
+                isLoad:false
             }
         },
         mounted() {
@@ -51,7 +65,11 @@
                 WriteApi().getBestDocument().then(res => {
                     this.bestDocument = res.data;
                     this.$emit("loaded");
+                    this.isLoad = true
                 });
+            },
+            goReadPage(documentId){
+                this.$router.push({name: 'Read', query: {document_id: documentId}})
             }
         },
 

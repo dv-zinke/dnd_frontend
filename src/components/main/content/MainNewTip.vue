@@ -1,7 +1,18 @@
 <template>
     <v-container class="category_container">
         <span class="title">실시간 등록 꿀팁</span>
-        <v-list>
+        <v-container
+                v-if="!isLoad"
+                class="text-center loading-container"
+        >
+            <v-progress-circular
+                    indeterminate
+                    class="progress text-center ma-auto"
+                    color="primary"
+            ></v-progress-circular>
+        </v-container>
+
+        <v-list v-else>
             <v-list-item
                     class="list_item"
                     v-for="item in newDocument"
@@ -16,7 +27,9 @@
                 >
                     #{{item.category}}
                 </v-chip>
-                <span class="list_text">
+                <span class="list_text"
+                      @click="goReadPage(item.id)"
+                >
                     {{item.title}}
                 </span>
                 <div class="right_icon">
@@ -34,7 +47,8 @@
         name: "MainNewTip",
         data() {
             return {
-                newDocument: []
+                newDocument: [],
+                isLoad : false
             }
         },
         mounted() {
@@ -44,8 +58,12 @@
             setNewDocument() {
                 WriteApi().getNewDocument().then(res => {
                     this.newDocument = res.data;
-                    this.$emit("loaded")
+                    this.$emit("loaded");
+                    this.isLoad = true;
                 });
+            },
+            goReadPage(documentId){
+                this.$router.push({name: 'Read', query: {document_id: documentId}})
             }
         },
     }

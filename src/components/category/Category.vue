@@ -29,38 +29,57 @@
             </div>
 
             <v-container fluid class="cateogry-grid">
-                <v-row dense>
+                <span class="font-weight-bold font-size18">{{title}} 카테고리</span>
+                <v-container
+                        v-if="!isLoad"
+                        class="text-center loading-container"
+                >
+                    <v-progress-circular
+                            indeterminate
+                            class="progress text-center ma-auto"
+                            color="primary"
+                    ></v-progress-circular>
+                </v-container>
+                <v-row dense v-else>
                     <v-col
-                            v-for="card in cards"
-                            :key="card.title"
-                            :cols="card.flex"
+                            v-for="content in contents"
+                            :key="content.document.id"
+                            :cols="6"
                     >
                         <v-card
-                                @click="goRead()"
+                                @click="goRead(content.document.id)"
+                                height="130"
+                                class="grid_card"
                         >
-                            <v-img
-                                    :src="card.src"
-                                    class="white--text align-end"
-                                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                                    height="150px"
-                            >
-                                <v-card-title v-text="card.title"></v-card-title>
-                            </v-img>
+
+                            <v-list-item class="grid_card_list_item">
+                                <v-list-item-avatar class="grid_card_avatar" color="grey" height="33"></v-list-item-avatar>
+                                <v-list-item-content>
+                                    <v-list-item-title class="headline grid_card_name font-weight-bold">
+                                        {{content.document.last_version.contributer && content.document.last_version.contributer.nickname}}
+                                    </v-list-item-title>
+                                    <v-list-item-subtitle class="grid_card_level">자취전문가</v-list-item-subtitle>
+                                </v-list-item-content>
+                            </v-list-item>
+
+                            <v-card-text class="grid_card_title">
+                                {{content.document.title}}
+                            </v-card-text>
 
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-
                                 <v-btn icon>
-                                    <v-icon>mdi-heart</v-icon>
+                                    <v-icon
+                                            color="#AD241A"
+                                            size="14px"
+                                    >
+                                        mdi-thumb-up-outline
+                                    </v-icon>
+
+                                    <span class="like_text">{{content.document.like}}</span>
                                 </v-btn>
 
-                                <v-btn icon>
-                                    <v-icon>mdi-bookmark</v-icon>
-                                </v-btn>
 
-                                <v-btn icon>
-                                    <v-icon>mdi-share-variant</v-icon>
-                                </v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-col>
@@ -71,6 +90,8 @@
 </template>
 
 <script>
+    import WriteApi from "../api/WriteApi";
+
     export default {
         name: "Category",
         props: {
@@ -93,7 +114,14 @@
                     { title: 'Best airlines3', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
                     { title: 'Best airlines4', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
                 ],
+                size:12,
+                page:0,
+                contents: [],
+                isLoad:false
             }
+        },
+        mounted(){
+          this.getHashtag();
         },
         methods: {
             goWrite() {
@@ -101,8 +129,16 @@
                 const title = this.title.toString();
                 this.$router.push({name: 'Write', query: {category: title}})
             },
-            goRead() {
-                this.$router.push({name: 'Read', query: {document_id: "2"}})
+            goRead(documentId) {
+                this.$router.push({name: 'Read', query: {document_id: documentId}})
+            },
+            getHashtag() {
+                WriteApi().getDocumentHashtagByHashtag(this.title, this.page, this.size)
+                    .then(res =>{
+                        this.contents = res.data.content;
+                        this.isLoad =true;
+                    })
+
             }
         },
     }
@@ -120,6 +156,9 @@
         font-weight: bold;
         margin-top: 10px;
         margin-bottom: 20px;
+    }
+    .font-size18 {
+        font-size: 18px;
     }
     .name {
         height: 80px;
@@ -144,4 +183,33 @@
     .cateogry-grid {
         background: #F9F9F9;
     }
+    .grid_card {
+        overflow: hidden;
+        margin: 8px;
+        border-radius: 20px;
+        .grid_card_name, .grid_card_level {
+            font-size: 10px !important;
+        }
+        .grid_card_avatar {
+            margin-right: 5px !important;
+        }
+
+        .like_text {
+            color:#AD241A;
+        }
+        .grid_card_title {
+            font-size: 12px !important;
+            padding-top: 0 !important;
+            padding: 8px;
+            height: 40px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .grid_card_list_item {
+            padding: 0px 5px;
+        }
+    }
+
 </style>

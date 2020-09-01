@@ -13,12 +13,12 @@
                 <v-icon>mdi-home-outline</v-icon>
             </v-btn>
 
-            <v-btn to="/community">
+            <v-btn to="/#1" @click="openModal">
                 <span>우리동네</span>
                 <v-icon>mdi-emoticon-happy-outline</v-icon>
             </v-btn>
 
-            <v-btn to="/map">
+            <v-btn to="/#2" @click="openModal">
                 <span>지도</span>
                 <v-icon>mdi-map-marker-outline</v-icon>
             </v-btn>
@@ -27,6 +27,24 @@
                 <v-icon>mdi-account-outline</v-icon>
             </v-btn>
         </v-bottom-navigation>
+
+        <v-snackbar
+                :top="true"
+                v-model="modal"
+        >
+            준비중 입니다.
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                        @click="modal = false"
+                        color="pink"
+                        text
+                        v-bind="attrs"
+                >
+                    Close
+                </v-btn>
+            </template>
+        </v-snackbar>
     </div>
 </template>
 
@@ -35,7 +53,8 @@
         name: "BottomNav",
         data() {
             return {
-                activeBtn: null
+                activeBtn: null,
+                modal: false
             }
         },
         mounted() {
@@ -43,6 +62,9 @@
         methods: {
             getActive() {
 
+            },
+            openModal() {
+                this.modal = true;
             }
         },
     }

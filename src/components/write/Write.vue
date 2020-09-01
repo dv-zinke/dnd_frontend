@@ -36,9 +36,9 @@
                 </v-chip>
             </v-container>
             <v-text-field
-                    v-model="title"
                     class="title_input"
                     prefix="제목 :"
+                    v-model="title"
             ></v-text-field>
         </v-row>
         <editor
@@ -49,6 +49,12 @@
                 initialEditType="wysiwyg"
                 ref="toastuiEditor"
         />
+
+        <div class="text-center">
+            <v-overlay :value="overlay">
+                <v-progress-circular indeterminate size="64"></v-progress-circular>
+            </v-overlay>
+        </div>
     </v-container>
 </template>
 
@@ -60,15 +66,13 @@
 
     export default {
         name: "Write",
-        props: {
-
-        },
+        props: {},
         components: {
             Editor
         },
         data() {
             return {
-                title:"",
+                title: "",
                 hashtagInput: "",
                 editorText: '',
                 editorOptions: {
@@ -79,7 +83,8 @@
                 hashtags: [],
                 url: null,
                 image: null,
-                image_base64: null
+                image_base64: null,
+                overlay: false
             }
         },
         mounted() {
@@ -87,7 +92,7 @@
         },
         methods: {
             createDocument() {
-
+                this.overlay = true;
                 const request = {
                     "document": {
                         "category": this.getCategory,
@@ -95,16 +100,20 @@
                     },
                     "content": this.$refs.toastuiEditor.invoke('getMarkdown'),
                     "hashtags": this.hashtags,
-                    "thumbnail": ""
+                    "user_id": 1
                 };
-                WriteApi().createDocument(request).then(res => {
-                    this.$router.push({name: 'Read', query: {document_id: res.data.id}})
-                })
+                WriteApi().createDocument(request)
+                    .then(res => {
+                        this.$router.push({name: 'Read', query: {document_id: res.data.id}})
+                    })
+                    .finally(() => {
+                        this.overlay = false;
+                    })
             },
             Preview_image() {
                 const reader = new FileReader();
                 reader.readAsDataURL(this.image);
-                reader.onload = ()=>{
+                reader.onload = () => {
                     this.image_base64 = reader.result
                 };
 
