@@ -8,6 +8,16 @@ import MypagePage from "../pages/MypagePage";
 import CategoryPage from "../pages/CategoryPage";
 import ReadPage from "../pages/ReadPage";
 import LoginPage from "../pages/LoginPage";
+import Cookie from 'js-cookie'
+
+const requireAuth = () => (from, to, next) => {
+
+    const token = Cookie.get('token');
+    if (typeof token === 'undefined') {
+        return next('/login');
+    }
+    next();
+};
 
 
 export default new VueRouter({
@@ -19,6 +29,7 @@ export default new VueRouter({
         {
             path: '/community',
             component: CommunityPage,
+            beforeEnter:requireAuth()
         },
         {
             path: '/map',
@@ -27,12 +38,14 @@ export default new VueRouter({
         {
             path: '/mypage',
             component: MypagePage,
+            beforeEnter:requireAuth()
         },
         {
             path: '/write',
             component: WritePage,
             name: "Write",
-            props:true
+            props:true,
+            beforeEnter:requireAuth()
         },
         {
             path: '/signup',
@@ -42,7 +55,8 @@ export default new VueRouter({
             path: '/category',
             component: CategoryPage,
             name: "Category",
-            props: true
+            props: true,
+            beforeEnter:requireAuth()
         },
         {
             path: '/read',
