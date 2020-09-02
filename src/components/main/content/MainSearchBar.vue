@@ -13,7 +13,6 @@
             outlined
             @focus="searchAll"
             color="#3ad9ac"
-            full-width="320px"
             class="search_bar"
     >
         <template v-slot:prepend-inner>

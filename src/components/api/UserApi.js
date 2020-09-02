@@ -18,6 +18,10 @@ class UserApi {
         return this.http.post("/login", userInfo)
     }
 
+    getAllUser() {
+        return this.http.get("/all-user");
+    }
+
 }
 
 

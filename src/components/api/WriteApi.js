@@ -35,6 +35,10 @@ class WriteApi {
     createDocument(requestData) {
         return this.http.post('/document/create', requestData)
     }
+
+    getCommentByDocumentId(documentId, page, size){
+        return this.http.get(`/comment/find?documentId=${documentId}&page=${page}&size=${size}`)
+    }
 }
 
 

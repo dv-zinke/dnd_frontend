@@ -28,7 +28,6 @@
                             label="비밀번호"
                             outlined
                             ref="password"
-                            required
                             rounded
                             type="password"
                             v-model="password"
@@ -40,7 +39,6 @@
                             label="비밀번호 확인"
                             outlined
                             ref="passwordConfirm"
-                            required
                             rounded
                             type="password"
                             v-model="passwordConfirm"
