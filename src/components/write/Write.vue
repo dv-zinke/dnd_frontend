@@ -55,6 +55,23 @@
                 <v-progress-circular indeterminate size="64"></v-progress-circular>
             </v-overlay>
         </div>
+        <v-snackbar
+                :top="true"
+                v-model="modal"
+        >
+            {{modalText}}
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                        @click="modal = false"
+                        color="pink"
+                        text
+                        v-bind="attrs"
+                >
+                    Close
+                </v-btn>
+            </template>
+        </v-snackbar>
     </v-container>
 </template>
 
@@ -84,7 +101,9 @@
                 url: null,
                 image: null,
                 image_base64: null,
-                overlay: false
+                overlay: false,
+                modal:false,
+                modalText: ""
             }
         },
         mounted() {
@@ -126,6 +145,10 @@
                 this.hashtagInput = "";
             },
             hashtagRemove(hashtag) {
+                if(this.hashtags.length === 1) {
+                    this.modalText = "카테고리는 한개 이하로 할수없습니다.";
+                    return this.modal = true;
+                }
                 this.hashtags = this.hashtags.filter(tag => tag !== hashtag);
             }
         },

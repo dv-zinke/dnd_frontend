@@ -1,86 +1,222 @@
 <template>
-    <v-container>
-        <span>댓글</span>
-        <div infinite-scroll-disabled="busy" infinite-scroll-distance="10" v-infinite-scroll="loadMore">
-            <v-card
-                    :key="item"
-                    class="mx-auto mb-3"
-                    max-width="400"
-                    outlined
-                    v-for="item in data"
+    <v-container class="pa-0 mt-2">
+        <span class="font-weight-bold">댓글 {{totalElements}}</span>
+        <div v-if="isInit">
+            <div
+                    infinite-scroll-disabled="busy"
+                    infinite-scroll-distance="50"
+                    v-infinite-scroll="loadMore"
             >
-                <v-card-title>
-                    <v-list-item-avatar color="grey darken-3" size="30">
-                        <v-img
-                                class="elevation-6"
-                                max-width="30"
-                                src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                        ></v-img>
-                    </v-list-item-avatar>
+                <v-container
+                        :key="item.id"
+                        v-for="item in data"
+                        class="comment-container pa-0"
+                >
+                    <v-row>
+                        <v-col cols="2">
+                            <v-container>
+                                <v-avatar color="grey darken-3" size="30">
+                                    <v-img
+                                            class="elevation-6"
+                                            max-width="30"
+                                            src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
+                                    ></v-img>
+                                </v-avatar>
+                            </v-container>
+                        </v-col>
+                        <v-col cols="10">
+                            <div class="mt-2">
+                                <span class="headline font-size12 font-weight-bold">{{getUserName(item.user_id, users)}}</span>
+                                <p class="subtitle-1 font-size12">{{item.content}}</p>
+                            </div>
+                            <span class="time-text font-size12">
+                                {{timeForToday(item.created_at)}}
+                            </span>
+                        </v-col>
+                    </v-row>
+                    <v-divider></v-divider>
+                </v-container>
+            </div>
+            <div class="text-center">
+                <v-progress-circular
+                        class="progress ma-auto"
+                        color="primary"
+                        indeterminate
+                        v-show="isLoading"
+                ></v-progress-circular>
+            </div>
+            <v-text-field
+                    :append-outer-icon="comment ? 'mdi-send' : 'mdi-pencil-box'"
+                    :loading="!isCreated"
+                    @click:append-outer="createComment"
+                    clear-icon="mdi-close-circle"
+                    clearable
+                    label="댓글을 남겨보세요"
+                    type="text"
+                    v-model="comment"
+            >
+                <template slot="prepend">
+                    <v-avatar
+                            size="40"
+                            :color="user.avatar_color"
+                    >
 
-                    <v-list-item-content>
-                        <v-list-item-title class="font-size12">Evan You</v-list-item-title>
-                    </v-list-item-content>
-                </v-card-title>
-
-                <v-card-text class="headline font-size12">
-                    "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type
-                    invalid as well."
-                    "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type
-                    invalid as well."
-                    "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type
-                    invalid as well."
-                    "Turns out semicolon-less style is easier and safer in TS because most gotcha edge cases are type
-                    invalid as well."
-                </v-card-text>
-
-                <v-card-actions>
-                    <v-list-item class="grow">
-                        <v-row
-                                align="center"
-                                justify="end"
-                        >
-                            <v-icon class="mr-1">mdi-heart</v-icon>
-                            <span class="subheading mr-2 font-size12">256</span>
-                        </v-row>
-                    </v-list-item>
-                </v-card-actions>
-            </v-card>
+                        <v-img v-if="user.avatar_image_url"
+                               :src="user.avatar_image_url"></v-img>
+                        <span v-else class="white--text headline">
+                        {{user.nickname.substring(0,1)}}
+                    </span>
+                    </v-avatar>
+                </template>
+            </v-text-field>
+        </div>
+        <div class="text-center" v-else>
+            <v-progress-circular
+                    class="progress ma-auto"
+                    color="primary"
+                    indeterminate
+                    v-show="isLoading"
+            ></v-progress-circular>
         </div>
     </v-container>
 </template>
 
 <script>
-    var count = 0;
+
+    import WriteApi from "../api/WriteApi";
+    import UserApi from "../api/UserApi";
+    import moment from "moment";
+    import {mapState} from "vuex";
+
     export default {
         name: "Comment",
+        props: {
+            documentId: {
+                required: true
+            },
+        },
         data() {
             return {
-                data: [{},{},{}],
+                data: [],
                 busy: false,
+                users: [],
+                page: 0,
+                size: 10,
+                isLast: false,
+                isLoading: false,
+                isInit: false,
+                isCreated: true,
+                totalElements: 0,
+                comment: ""
 
             }
         },
-        mounted(){
-
+        mounted() {
+            console.log(this.user)
+            this.getAllData();
         },
         methods: {
 
-            loadMore: function () {
+            loadMore() {
+                if (!this.isInit) return;
+                this.isLoading = true;
+                if (this.isLast) return this.isLoading = false;
                 this.busy = true;
+                this.page = this.page + 1;
+                WriteApi().getCommentByDocumentId(this.documentId, this.page, this.size)
+                    .then(res => {
+                        this.data.concat(res.data.content);
+                        this.isLast = res.data.last;
+                        this.busy = false;
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                    })
+            },
+            getAllData() {
+                this.page = 0;
+                this.isLoading = true;
+                WriteApi().getCommentByDocumentId(this.documentId, this.page, this.size)
+                    .then(res => {
+                        this.data = res.data.content;
+                        this.isLast = res.data.last;
+                        this.totalElements = res.data.totalElements;
+                        return UserApi().getAllUser()
+                    })
+                    .then(res => {
+                        this.users = res.data;
+                    })
+                    .finally(() => {
+                        this.isLoading = false;
+                        this.isInit = true;
+                    })
+            },
 
-                setTimeout(() => {
-                    for (let i = 0, j = 10; i < j; i++) {
-                        this.data.push({name: count++});
-                    }
-                    this.busy = false;
-                }, 1000);
+            createComment() {
+                if(!this.comment) return
+                const commentParam = {
+                    document_id: this.documentId,
+                    user_id: 1,
+                    content: this.comment
+                };
+                this.isCreated = false;
+                WriteApi().createComment(commentParam)
+                    .then(() => {
+                        this.getAllData();
+
+                    })
+                    .finally(() => {
+                        this.comment = "";
+                        this.isCreated = true;
+                    })
+            },
+            getDate(utcCode) {
+                const seoul = moment(utcCode).tz('Asia/Seoul');
+                return seoul.format();
+            },
+            timeForToday(value) {
+                const today = new Date();
+                const timeValue = new Date(value);
+
+                const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+                if (betweenTime < 1) return '방금전';
+                if (betweenTime < 60) {
+                    return `${betweenTime}분전`;
+                }
+
+                const betweenTimeHour = Math.floor(betweenTime / 60);
+                if (betweenTimeHour < 24) {
+                    return `${betweenTimeHour}시간전`;
+                }
+
+                const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+                if (betweenTimeDay < 365) {
+                    return `${betweenTimeDay}일전`;
+                }
+
+                return `${Math.floor(betweenTimeDay / 365)}년전`;
             }
         },
+        computed: {
+            ...mapState({
+                user: state => state.user
+            })
+        }
     }
 </script>
 
 <style lang="scss" scoped>
+    .comment-container {
+        position: relative;
+        width: 100%;
+        .time-text {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color:#9B9B9B;
+        }
+    }
+
     .font-size12 {
         font-size: 12px !important;
         line-height: 16px !important;

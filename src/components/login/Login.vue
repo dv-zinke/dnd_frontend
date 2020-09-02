@@ -111,7 +111,7 @@
                             let jwt = require('jsonwebtoken');
                             let decoded = jwt.decode(token);
                             let user = JSON.parse(decoded.user);
-                            this.$store.commit('setUser', user);
+                            this.$store.commit('setUser', user.info);
                             Cookies.set('token', token);
                             this.$router.push('/');
                         }

@@ -9,12 +9,20 @@
         <v-container>
             <div class="name">
                 <div class="name_avatar">
-                    <v-avatar color="indigo">
-                        <v-icon dark>mdi-account-circle</v-icon>
+                    <v-avatar
+                            size="60"
+                            :color="user.avatar_color"
+                    >
+
+                        <v-img v-if="user.avatar_image_url"
+                               :src="user.avatar_image_url"></v-img>
+                        <span v-else class="white--text headline">
+                        {{user.nickname.substring(0,1)}}
+                    </span>
                     </v-avatar>
                 </div>
                 <div class="name_text">
-                    <span>{{name}}님,</span> <br>
+                    <span>{{user.nickname}}님,</span> <br>
                     <span>당신의 <span class="font-weight-bold">꿀팁을 공유</span>해주세요</span>
                 </div>
             </div>
@@ -100,15 +108,12 @@
 
 <script>
     import WriteApi from "../api/WriteApi";
+    import {mapState} from "vuex";
 
     export default {
         name: "Category",
         props: {
             title: {
-                type: String,
-                required: true,
-            },
-            name: {
                 type: String,
                 required: true,
             }
@@ -150,6 +155,11 @@
 
             }
         },
+        computed: {
+            ...mapState({
+                user: state => state.user
+            })
+        }
     }
 </script>
 

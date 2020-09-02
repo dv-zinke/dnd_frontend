@@ -65,6 +65,29 @@
                    @click="createUser"
             >가입완료</v-btn>
         </v-container>
+
+        <v-snackbar
+                :top="true"
+                v-model="modal"
+        >
+            {{modalText}}
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                        @click="modal = false"
+                        color="pink"
+                        text
+                        v-bind="attrs"
+                >
+                    Close
+                </v-btn>
+            </template>
+        </v-snackbar>
+        <div class="text-center">
+            <v-overlay :value="overlay">
+                <v-progress-circular indeterminate size="64"></v-progress-circular>
+            </v-overlay>
+        </div>
     </v-container>
 </template>
 
@@ -94,7 +117,10 @@
                 ],
                 nicknameRules: [
                     v => !!v || "닉네임은 필수 입력 항목입니다."
-                ]
+                ],
+                modal:false,
+                modalText: "회원가입이 성공하였습니다.",
+                overlay:false
             }
         },
         methods: {
@@ -110,12 +136,17 @@
                     password: this.password,
                     nickname: this.nickname
                 };
-                UserApi().createUser(userInfo).then(res =>{
-                    console.log(res)
+                this.overlay =true;
+                UserApi().createUser(userInfo).then(() =>{
+                    this.modalText = "회원가입이 성공하였습니다.";
+                    this.modal = true;
+                    this.$router.push({path: 'login'})
                 }).catch(err =>{
-                    console.dir(err)
-                    console.error(err)
-                })
+                    this.modalText = err.response.data.errorMsg;
+                    this.modal = true;
+                }).finally(()=>{
+                    this.overlay = false;
+                });
 
             }
 

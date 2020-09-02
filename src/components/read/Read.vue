@@ -13,8 +13,9 @@
             </v-btn>
         </v-container>
         <Viewer :initialValue="viewerText" height="400px"  />
+        <read-bottom-menu/>
         <v-divider></v-divider>
-        <comment />
+        <comment :document-id="getDocumentId"/>
     </v-container>
     <v-container v-else>
         <v-progress-circular
@@ -31,9 +32,11 @@
     import Comment from "./Comment";
     import WriteApi from "../api/WriteApi";
     import axios from 'axios';
+    import ReadBottomMenu from "./ReadBottomMenu";
     export default {
         name: "Read",
         components: {
+            ReadBottomMenu,
             Comment,
             Viewer
         },

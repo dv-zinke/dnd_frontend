@@ -1,6 +1,6 @@
 <template>
     <div>
-        <category :title="getTitle" name="게스트"/>
+        <category :title="getTitle"/>
     </div>
 </template>
 

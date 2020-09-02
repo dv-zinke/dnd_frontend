@@ -14,6 +14,7 @@
 
 <script>
     import BottomNav from "./components/BottomNav";
+    import Cookie from 'js-cookie';
 
     export default {
         name: 'App',
@@ -26,10 +27,23 @@
             }
         },
         mounted() {
-            console.log("A");
+            this.getToken();
             this.getContent();
         },
         methods: {
+            getToken(){
+                const token = Cookie.get('token');
+                if (typeof token === 'undefined') {
+                    return
+                } else {
+                    let jwt = require('jsonwebtoken');
+                    let decoded = jwt.decode(token);
+                    let user = JSON.parse(decoded.user);
+                    this.$store.commit('setUser', user.info);
+
+                }
+
+            },
             getContent() {
                 setTimeout(()=>{
                     this.isLoad = true;
