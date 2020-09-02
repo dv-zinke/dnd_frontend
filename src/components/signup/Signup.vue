@@ -60,12 +60,19 @@
         </v-row>
         <v-divider></v-divider>
         <v-container class="sign_btn_container">
-            <v-btn class="sign_btn" rounded color="#3ae4b6" :disabled="!valid">가입완료</v-btn>
+            <v-btn class="sign_btn"
+                   rounded
+                   color="#3ae4b6"
+                   :disabled="!valid"
+                   @click="createUser"
+            >가입완료</v-btn>
         </v-container>
     </v-container>
 </template>
 
 <script>
+    import UserApi from "../api/UserApi";
+
     export default {
         name: "Signup",
         data() {
@@ -98,6 +105,20 @@
             },
             passwordConfirmValidation() {
                 this.$refs.passwordConfirm.validate();
+            },
+            createUser(){
+                const userInfo = {
+                    email: this.email,
+                    password: this.password,
+                    nickname: this.nickname
+                };
+                UserApi().createUser(userInfo).then(res =>{
+                    console.log(res)
+                }).catch(err =>{
+                    console.dir(err)
+                    console.error(err)
+                })
+
             }
 
         },
