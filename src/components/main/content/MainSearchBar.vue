@@ -14,6 +14,7 @@
             @focus="searchAll"
             color="#3ad9ac"
             class="search_bar"
+            @change='onChange'
     >
         <template v-slot:prepend-inner>
             <v-icon
@@ -68,6 +69,9 @@
                         console.log(err)
                     })
                     .finally(() => (this.isLoading = false))
+            },
+            onChange(value) {
+                this.$router.push({name: 'Category', query: {title: value.name}});
             }
         },
         watch: {

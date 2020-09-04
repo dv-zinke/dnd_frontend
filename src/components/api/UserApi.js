@@ -7,7 +7,7 @@ class UserApi {
     }
     initializeAxios() {
         this.http = axios.create({
-            baseURL: "http://localhost:9020/",
+            baseURL: "http://ec2-13-58-81-87.us-east-2.compute.amazonaws.com:9020",
         });
     }
     createUser(userInfo){

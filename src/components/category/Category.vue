@@ -10,13 +10,13 @@
             <div class="name">
                 <div class="name_avatar">
                     <v-avatar
-                            size="60"
                             :color="user.avatar_color"
+                            size="60"
                     >
 
-                        <v-img v-if="user.avatar_image_url"
-                               :src="user.avatar_image_url"></v-img>
-                        <span v-else class="white--text headline">
+                        <v-img :src="user.avatar_image_url"
+                               v-if="user.avatar_image_url"></v-img>
+                        <span class="white--text headline" v-else>
                         {{user.nickname.substring(0,1)}}
                     </span>
                     </v-avatar>
@@ -68,8 +68,19 @@
                         >
 
                             <v-list-item class="grid_card_list_item">
-                                <v-list-item-avatar class="grid_card_avatar" color="grey"
-                                                    height="33"></v-list-item-avatar>
+                                <v-list-item-avatar
+                                        v-if="content.document.last_version.contributer"
+                                        class="grid_card_avatar justify-center"
+                                        :color="content.document.last_version.contributer.avatar_color"
+                                        height="33">
+                                    <v-img :src="content.document.last_version.contributer.avatar_image_url"
+                                           v-if="content.document.last_version.contributer.avatar_image_url"></v-img>
+                                    <span class="white--text" v-else>
+                                    {{content.document.last_version.contributer.nickname.substring(0,1)}}
+                                    </span>
+                                </v-list-item-avatar>
+
+
                                 <v-list-item-content>
                                     <v-list-item-title class="headline grid_card_name font-weight-bold">
                                         {{content.document.last_version.contributer &&
@@ -120,14 +131,6 @@
         },
         data() {
             return {
-                cards: [
-                    {title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6},
-                    {title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6},
-                    {title: 'Best airlines1', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6},
-                    {title: 'Best airlines2', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6},
-                    {title: 'Best airlines3', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6},
-                    {title: 'Best airlines4', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6},
-                ],
                 size: 12,
                 page: 0,
                 contents: [],
@@ -195,7 +198,6 @@
             float: left;
         }
     }
-
 
 
     .write {

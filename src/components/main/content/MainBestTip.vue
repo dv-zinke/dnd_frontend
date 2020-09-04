@@ -23,6 +23,7 @@
                         outlined
                         small
                         text-color="black"
+                        @click="goCategory(item.category)"
                 >
                     #{{item.category}}
                 </v-chip>
@@ -70,6 +71,10 @@
             },
             goReadPage(documentId){
                 this.$router.push({name: 'Read', query: {document_id: documentId}})
+            },
+            goCategory(category){
+                if(!category) return
+                this.$router.push({name: 'Category', query: {title: category}})
             }
         },
 

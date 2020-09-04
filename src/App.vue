@@ -53,8 +53,8 @@
     };
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+    @import './styles/main';
     .container {
         width: 400px !important;
         padding: 0 !important;

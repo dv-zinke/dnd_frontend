@@ -1,6 +1,6 @@
 <template>
     <div>
-        우리동네
+        현재 준비중인 페이지 입니다.
     </div>
 </template>
 

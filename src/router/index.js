@@ -9,6 +9,8 @@ import CategoryPage from "../pages/CategoryPage";
 import ReadPage from "../pages/ReadPage";
 import LoginPage from "../pages/LoginPage";
 import Cookie from 'js-cookie'
+import HistoryPage from "../pages/HistoryPage";
+import DiffPage from "../pages/DiffPage";
 
 const requireAuth = () => (from, to, next) => {
 
@@ -68,6 +70,16 @@ export default new VueRouter({
             path: '/login',
             component: LoginPage,
             name: "Login",
+        },
+        {
+            path: '/history',
+            component: HistoryPage,
+            name: "History",
+            props:true,
+        },
+        {
+            path: '/diff/:id',
+            component: DiffPage
         }
 
 

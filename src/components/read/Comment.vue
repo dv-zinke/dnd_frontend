@@ -15,12 +15,15 @@
                     <v-row>
                         <v-col cols="2">
                             <v-container>
-                                <v-avatar color="grey darken-3" size="30">
-                                    <v-img
-                                            class="elevation-6"
-                                            max-width="30"
-                                            src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
-                                    ></v-img>
+                                <v-avatar
+                                        :color="getSelectUser(item.user_id).avatar_color"
+                                        size="30"
+                                >
+                                    <v-img :src="getSelectUser(item.user_id).avatar_image_url"
+                                           v-if="getSelectUser(item.user_id).avatar_image_url"></v-img>
+                                    <span class="white--text headline" v-else>
+                                    {{getSelectUser(item.user_id).nickname.substring(0,1)}}
+                                    </span>
                                 </v-avatar>
                             </v-container>
                         </v-col>
@@ -112,7 +115,6 @@
             }
         },
         mounted() {
-            console.log(this.user)
             this.getAllData();
         },
         methods: {
@@ -151,19 +153,20 @@
                         this.isInit = true;
                     })
             },
-
+            getSelectUser(userId){
+              return this.users.find(user => user.id === userId)
+            },
             createComment() {
-                if(!this.comment) return
+                if(!this.comment) return;
                 const commentParam = {
                     document_id: this.documentId,
-                    user_id: 1,
+                    user_id: this.user.id,
                     content: this.comment
                 };
                 this.isCreated = false;
                 WriteApi().createComment(commentParam)
                     .then(() => {
                         this.getAllData();
-
                     })
                     .finally(() => {
                         this.comment = "";
@@ -177,6 +180,8 @@
             timeForToday(value) {
                 const today = new Date();
                 const timeValue = new Date(value);
+                timeValue.setHours(timeValue.getHours()+9);
+
 
                 const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
                 if (betweenTime < 1) return '방금전';

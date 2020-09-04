@@ -13,12 +13,12 @@
                 <v-icon>mdi-home-outline</v-icon>
             </v-btn>
 
-            <v-btn to="/#1" @click="openModal">
+            <v-btn to="/community">
                 <span>우리동네</span>
                 <v-icon>mdi-emoticon-happy-outline</v-icon>
             </v-btn>
 
-            <v-btn to="/#2" @click="openModal">
+            <v-btn to="/map">
                 <span>지도</span>
                 <v-icon>mdi-map-marker-outline</v-icon>
             </v-btn>

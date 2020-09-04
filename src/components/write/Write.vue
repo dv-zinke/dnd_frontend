@@ -4,7 +4,8 @@
             <v-icon @click="$router.go(-1)" class="close_btn">
                 mdi-close
             </v-icon>
-            <span>꿀팁 공유</span>
+            <span v-if="getIsModify">꿀팁 편집</span>
+            <span v-else>꿀팁 공유</span>
             <v-btn @click="createDocument()"
                    class="complete_btn"
                    color="primary"
@@ -20,11 +21,12 @@
                     clearable
                     prefix="태그 입력:"
                     v-model="hashtagInput"
+                    v-if="!getIsModify"
 
             >
             </v-text-field>
 
-            <v-container v-if="!isNotExistHashtag">
+            <v-container v-if="!isNotExistHashtag && !getIsModify">
                 <v-chip
                         :key="hashtag"
                         @click:close="hashtagRemove(hashtag)"
@@ -39,9 +41,12 @@
                     class="title_input"
                     prefix="제목 :"
                     v-model="title"
+                    :disabled="getIsModify"
             ></v-text-field>
         </v-row>
+
         <editor
+                v-if="isModifyDataLoad"
                 :initialValue="editorText"
                 :options="editorOptions"
                 :visible="editorVisible"
@@ -49,6 +54,9 @@
                 initialEditType="wysiwyg"
                 ref="toastuiEditor"
         />
+        <div class="text-center" v-else>
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </div>
 
         <div class="text-center">
             <v-overlay :value="overlay">
@@ -80,6 +88,8 @@
     import '@toast-ui/editor/dist/toastui-editor.css';
     import {Editor} from '@toast-ui/vue-editor'
     import WriteApi from "../api/WriteApi";
+    import axios from 'axios';
+    import {mapState} from "vuex";
 
     export default {
         name: "Write",
@@ -103,25 +113,56 @@
                 image_base64: null,
                 overlay: false,
                 modal:false,
-                modalText: ""
+                modalText: "",
+                isModifyDataLoad:false
             }
         },
         mounted() {
             this.hashtags.push(this.getCategory);
+            if(this.getIsModify) this.getDocument();
+            else this.isModifyDataLoad = true;
         },
         methods: {
+            getDocument() {
+                WriteApi().getDocumentById(this.getDocumentId)
+                    .then(({data}) =>{
+                        this.title = data.title;
+                        return axios.get(data.last_version.data_url)
+                    })
+                    .then(res =>{
+                        this.editorText= res.data;
+                        this.isModifyDataLoad =true;
+                    })
+
+            },
             createDocument() {
+                if(this.getIsModify) return this.updateDocument()
                 this.overlay = true;
                 const request = {
                     "document": {
                         "category": this.getCategory,
                         "title": this.title
                     },
-                    "content": this.$refs.toastuiEditor.invoke('getMarkdown'),
+                    "content": this.$refs.toastuiEditor.invoke('getHtml'),
                     "hashtags": this.hashtags,
-                    "user_id": 1
+                    "user_id": this.user.id
                 };
                 WriteApi().createDocument(request)
+                    .then(res => {
+                        this.$router.push({name: 'Read', query: {document_id: res.data.id}})
+                    })
+                    .finally(() => {
+                        this.overlay = false;
+                    })
+            },
+            updateDocument(){
+                this.overlay = true;
+                const request = {
+                    "document_id": this.getDocumentId,
+                    "content": this.$refs.toastuiEditor.invoke('getHtml'),
+                    "user_id": this.user.id
+                };
+                WriteApi().updateDocument(request)
                     .then(res => {
                         this.$router.push({name: 'Read', query: {document_id: res.data.id}})
                     })
@@ -158,7 +199,17 @@
             },
             getCategory() {
                 return this.$route.query.category;
-            }
+            },
+            getIsModify() {
+                return !!this.$route.query.is_modify;
+            },
+            getDocumentId() {
+                return this.$route.query.document_id;
+            },
+            ...mapState({
+                user: state => state.user
+            })
+
         },
     }
 </script>

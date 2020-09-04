@@ -4,7 +4,8 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 const state = {
-    user: undefined
+    user: undefined,
+    dataUrl: undefined
 };
 
 const store = new Vuex.Store({
@@ -14,6 +15,9 @@ const store = new Vuex.Store({
         setUser(state, user) {
             state.user = user;
         },
+        setDataUrl(state, dataUrl) {
+            state.dataUrl = dataUrl;
+        }
     }
 });
 

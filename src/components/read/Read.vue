@@ -1,7 +1,7 @@
 <template>
     <v-container v-if="isLoad">
         <v-container class="header">
-            <v-icon @click="$router.go(-1)" class="close_btn">
+            <v-icon @click="goMain" class="close_btn">
                 mdi-close
             </v-icon>
             <span>꿀팁</span>
@@ -9,11 +9,12 @@
                    class="complete_btn"
                    color="success"
                    small
+                   @click="goModify"
             >편집
             </v-btn>
         </v-container>
         <Viewer :initialValue="viewerText" height="400px"  />
-        <read-bottom-menu/>
+        <read-bottom-menu :document-id="getDocumentId"/>
         <v-divider></v-divider>
         <comment :document-id="getDocumentId"/>
     </v-container>
@@ -51,7 +52,6 @@
         },
         methods: {
             getDocument() {
-                console.log(this.getDocumentId);
                 WriteApi().getDocumentById(this.getDocumentId)
                     .then(({data}) =>{
                         this.viewerText += `# ${data.title} \n`;
@@ -60,8 +60,16 @@
                     .then(res =>{
                         this.viewerText += res.data;
                         this.isLoad =true;
+                        console.log(this.viewerText)
+
                     })
 
+            },
+            goModify(){
+                this.$router.push({name: 'Write', query: {document_id: this.getDocumentId.toString(), is_modify: true.toString()}})
+            },
+            goMain(){
+                this.$router.push({path: "/"})
             }
         },
         computed: {
