@@ -1,12 +1,14 @@
 <template>
     <div>
-        현재 준비중인 페이지 입니다.
+        <map-component />
     </div>
 </template>
 
 <script>
+    import MapComponent from "../components/map/MapComponent";
     export default {
-        name: "MapPage"
+        name: "MapPage",
+        components: {MapComponent}
     }
 </script>
 
