@@ -18,7 +18,6 @@
     "moment": "^2.27.0",
     "vue": "^2.6.11",
     "vue-infinite-scroll": "^2.0.2",
-    "vue-naver-maps": "^0.14.1",
     "vue-router": "^3.4.3",
     "vuetify": "^2.2.11",
     "vuex": "^3.5.1"

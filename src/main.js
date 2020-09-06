@@ -6,9 +6,11 @@ import router from './router'
 import infiniteScroll from 'vue-infinite-scroll';
 import store from './store'
 import UtilMixin from "./mixin/UtilMixin";
+
 Vue.config.productionTip = false;
 Vue.use(infiniteScroll);
 Vue.mixin(UtilMixin);
+
 
 
 Vue.use(VueRouter);
