@@ -7,7 +7,7 @@
             <span>{{title}} 꿀팁</span>
         </div>
         <v-container class="pa-0">
-            <div class="name">
+            <div class="name pl-3">
                 <div class="name_avatar">
                     <v-avatar
                             :color="user.avatar_color"
@@ -86,7 +86,9 @@
                                         {{content.document.last_version.contributer &&
                                         content.document.last_version.contributer.nickname}}
                                     </v-list-item-title>
-                                    <v-list-item-subtitle class="grid_card_level">자취전문가</v-list-item-subtitle>
+                                    <v-list-item-subtitle class="grid_card_level">
+                                        자취 Lv {{content.document.last_version.contributer.level}}
+                                    </v-list-item-subtitle>
                                 </v-list-item-content>
                             </v-list-item>
 

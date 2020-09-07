@@ -70,7 +70,8 @@
             },
             goMain(){
                 this.$router.push({path: "/"})
-            }
+            },
+
         },
         computed: {
             getDocumentId() {

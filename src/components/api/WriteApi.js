@@ -53,6 +53,14 @@ class WriteApi {
     getDocumentVersionByDocumentId(documentId, page, size){
         return this.http.get(`/document-version/search?document_id=${documentId}&page=${page}&size=${size}`)
     }
+
+    likeDocument(documentId) {
+        return this.http.post(`/document/like/${documentId}`)
+    }
+
+    dislikeDocument(documentId) {
+        return this.http.post(`/document/dislike/${documentId}`)
+    }
 }
 
 

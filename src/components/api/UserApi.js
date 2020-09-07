@@ -18,8 +18,16 @@ class UserApi {
         return this.http.post("/login", userInfo)
     }
 
+    getUser(userId) {
+        return this.http.get(`/find?userId=${userId}`)
+    }
+
     getAllUser() {
         return this.http.get("/all-user");
+    }
+
+    saveLikes(userId, likes) {
+        return this.http.post(`/likes/${userId}`, likes)
     }
 
 }

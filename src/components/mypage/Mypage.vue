@@ -28,7 +28,7 @@
                 </template>
 
                 <v-avatar
-                        @click="avatarChange"
+                        @click="avatarChange(user.avatar_color)"
                         size="60"
                         :color="user.avatar_color"
                 >
@@ -107,17 +107,28 @@
             </div>
         </v-container>
 
+        <v-container class="text-center">
+            <v-btn class="mx-auto" color="error" @click="logout">로그아웃</v-btn>
+        </v-container>
+        <avatar-change-modal ref="avatarChangeModal"/>
     </v-container>
 </template>
 
 <script>
     import {mapState} from "vuex";
+    import AvatarChangeModal from "./modal/AvatarChangeModal";
+    import Cookies from 'js-cookie'
 
     export default {
         name: "Mypage",
+        components: {AvatarChangeModal},
         methods: {
-            avatarChange() {
-                console.log("A");
+            avatarChange(color) {
+                this.$refs.avatarChangeModal.open(color);
+            },
+            logout(){
+                Cookies.remove('token');
+                this.$router.push('/login');
             }
         },
         mounted() {
