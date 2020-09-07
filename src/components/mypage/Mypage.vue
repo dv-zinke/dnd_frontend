@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="pa-0">
         <div class="mypage-header">
             <v-icon @click="$router.go(-1)" class="back-btn">
                 mdi-arrow-left
@@ -10,7 +10,7 @@
         </div>
         <v-divider></v-divider>
 
-        <v-container class="mt-5 avatar-container">
+        <v-container class="mt-5 avatar-container pa-0">
             <v-badge
                     avatar
                     bordered

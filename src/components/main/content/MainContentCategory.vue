@@ -12,12 +12,13 @@
                             v-for="item in category"
                     >
                         <v-avatar
-                                color="#c7f4ef"
+                                color="#F3F3F3"
                         >
                             <v-img
                                     :src="require(`@/assets/category/${item.src}`)"
-                                    max-width="40"
-                                    max-height="40"
+                                    :max-width="item.width"
+                                    :max-height="item.height"
+                                    class="category-avatar-image"
                             >
                             </v-img>
                         </v-avatar>
@@ -54,25 +55,39 @@
             return {
                 category: [{
                     title: "청소",
-                    src: "cleaning.png"
+                    src: "cleaning.png",
+                    width:17,
+                    height:26
                 }, {
                     title: "화장실",
-                    src:"washroom.png"
+                    src:"washroom.png",
+                    width:23,
+                    height:20
                 }, {
                     title: "법률",
-                    src:"law.png"
+                    src:"law.png",
+                    width:24,
+                    height:20
                 }, {
                     title: "분리수거",
-                    src:"trash_sort.png"
+                    src:"trash_sort.png",
+                    width:22,
+                    height:20
                 },{
                     title: "이사",
-                    src:"move.png"
+                    src:"move.png",
+                    width:24,
+                    height:16
                 },{
                     title: "요리",
-                    src:"cooking.png"
+                    src:"cooking.png",
+                    width:22,
+                    height:22
                 }, {
                     title: "반려동물",
-                    src:"pet.png"
+                    src:"pet.png",
+                    width:20,
+                    height:22
                 }],
                 modal: false
             }
@@ -111,6 +126,9 @@
         .category_title {
             text-align: center;
             font-size: 12px;
+        }
+        .category-avatar-image {
+            border-radius: 0 !important;
         }
     }
 </style>

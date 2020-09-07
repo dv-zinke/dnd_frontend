@@ -86,6 +86,7 @@
             padding-left: 0;
             position: relative;
             min-height:  35px !important;
+
             .list_text{
                 margin-left:15px;
                 display:block;
@@ -103,7 +104,9 @@
                 color: white;
                 text-align: center;
                 font-weight: bold;
-                border-radius: 2px;
+                border-radius: 5px;
+                font-size: 16px;
+                line-height: 20px;
             }
         }
 

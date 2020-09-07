@@ -1,12 +1,12 @@
 <template>
-    <v-container>
+    <v-container class="pa-0">
         <v-icon @click="$router.go(-1)" class="back_btn">
             mdi-arrow-left
         </v-icon>
         <div class="header">
             <span>{{title}} 꿀팁</span>
         </div>
-        <v-container>
+        <v-container class="pa-0">
             <div class="name">
                 <div class="name_avatar">
                     <v-avatar
