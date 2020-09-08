@@ -110,7 +110,7 @@
         <v-container class="text-center">
             <v-btn class="mx-auto" color="error" @click="logout">로그아웃</v-btn>
         </v-container>
-        <avatar-change-modal ref="avatarChangeModal"/>
+        <avatar-change-modal :user-id="user.id" ref="avatarChangeModal"/>
     </v-container>
 </template>
 

@@ -145,7 +145,8 @@
                     },
                     "content": this.$refs.toastuiEditor.invoke('getHtml'),
                     "hashtags": this.hashtags,
-                    "user_id": this.user.id
+                    "user_id": this.user.id,
+
                 };
                 WriteApi().createDocument(request)
                     .then(res => {
@@ -154,6 +155,7 @@
                     .finally(() => {
                         this.overlay = false;
                     })
+
             },
             updateDocument(){
                 this.overlay = true;

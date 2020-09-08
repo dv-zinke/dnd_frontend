@@ -30,6 +30,14 @@ class UserApi {
         return this.http.post(`/likes/${userId}`, likes)
     }
 
+    avatarChange(userId, formData){
+        return this.http.post(`/avatar/${userId}`, formData, {
+            headers : {
+                "Content-Type" : "multipart/form-data"
+            }
+        })
+    }
+
 }
 
 

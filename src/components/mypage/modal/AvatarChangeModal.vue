@@ -47,8 +47,16 @@
 </template>
 
 <script>
+    import UserApi from "../../api/UserApi";
+
     export default {
         name: "AvatarChangeModal",
+        props: {
+            userId: {
+                type: Number,
+                required:true
+            },
+        },
         data() {
             return {
                 modal: false,
@@ -59,6 +67,9 @@
                 image:null,
                 url:null
             }
+        },
+        mounted(){
+
         },
         methods: {
             open(color) {
@@ -72,10 +83,18 @@
                 this.url = URL.createObjectURL(this.image)
             },
             onChange(){
+                const formData = new FormData();
+                formData.append("color", this.picker);
+                formData.append("file", this.image);
+                UserApi().avatarChange(this.userId, formData).then(res =>{
+                    this.modal = false;
+                    this.$store.commit('setUser', res.data);
+                })
 
             }
 
         },
+
     }
 </script>
 
