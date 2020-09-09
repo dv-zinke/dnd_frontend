@@ -79,18 +79,17 @@
                 <span>
                     혹시 오늘 입주하신지 몇 일째 인가요?
                 </span>
-                <p class="float-right confirm-btn">
+                <v-btn text class="float-right confirm-btn pa-0" @click="moveModalOpen">
                     확인하기
                     <v-icon color="#A0A0A0">
                         mdi-chevron-right
                     </v-icon>
-                </p>
+                </v-btn>
             </v-container>
         </v-container>
         <v-container class="save-container">
             <div class="py-4">
                 저장한 꿀팁
-
                 <v-icon class="float-right">
                     mdi-chevron-right
                 </v-icon>
@@ -111,6 +110,7 @@
             <v-btn class="mx-auto" color="error" @click="logout">로그아웃</v-btn>
         </v-container>
         <avatar-change-modal :user-id="user.id" ref="avatarChangeModal"/>
+        <move-date-change-modal ref="moveModal"></move-date-change-modal>
     </v-container>
 </template>
 
@@ -118,10 +118,11 @@
     import {mapState} from "vuex";
     import AvatarChangeModal from "./modal/AvatarChangeModal";
     import Cookies from 'js-cookie'
+    import MoveDateChangeModal from "./modal/MoveDateChangeModal";
 
     export default {
         name: "Mypage",
-        components: {AvatarChangeModal},
+        components: {MoveDateChangeModal, AvatarChangeModal},
         methods: {
             avatarChange(color) {
                 this.$refs.avatarChangeModal.open(color);
@@ -129,7 +130,11 @@
             logout(){
                 Cookies.remove('token');
                 this.$router.push('/login');
+            },
+            moveModalOpen(){
+                this.$refs.moveModal.open()
             }
+
         },
         mounted() {
             console.log(this.user)
@@ -241,6 +246,7 @@
         font-size: 14px;
 
         .confirm-btn {
+            margin-top:-8px;
             color: #A0A0A0;
         }
     }
