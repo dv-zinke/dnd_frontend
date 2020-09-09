@@ -70,6 +70,7 @@
             <v-btn
                     class="address-verif-btn"
                     color="#39E5B6"
+                    @click="openModalAlert"
             >
                 <span>동네인증하기</span>
             </v-btn>
@@ -87,7 +88,7 @@
                 </v-btn>
             </v-container>
         </v-container>
-        <v-container class="save-container">
+        <v-container class="save-container" @click="openModalAlert">
             <div class="py-4">
                 저장한 꿀팁
                 <v-icon class="float-right">
@@ -97,7 +98,7 @@
 
         </v-container>
         <v-divider></v-divider>
-        <v-container class="post-container">
+        <v-container class="post-container" @click="openModalAlert">
             <div class="py-4">
                 내가 쓴 글 보기
                 <v-icon class="float-right">
@@ -111,6 +112,23 @@
         </v-container>
         <avatar-change-modal :user-id="user.id" ref="avatarChangeModal"/>
         <move-date-change-modal ref="moveModal"></move-date-change-modal>
+        <v-snackbar
+                :top="true"
+                v-model="modalAlert"
+        >
+            준비중인 기능입니다.
+
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                        @click="modalAlert = false"
+                        color="pink"
+                        text
+                        v-bind="attrs"
+                >
+                    Close
+                </v-btn>
+            </template>
+        </v-snackbar>
     </v-container>
 </template>
 
@@ -122,6 +140,11 @@
 
     export default {
         name: "Mypage",
+        data() {
+            return {
+                modalAlert: false
+            }
+        },
         components: {MoveDateChangeModal, AvatarChangeModal},
         methods: {
             avatarChange(color) {
@@ -133,6 +156,9 @@
             },
             moveModalOpen(){
                 this.$refs.moveModal.open()
+            },
+            openModalAlert(){
+                this.modalAlert = true;
             }
 
         },
@@ -226,6 +252,9 @@
             position: absolute;
             left: 0px;
             top: -40px;
+        }
+        .map-image img{
+            width:100%
         }
 
         .address-verif-btn {

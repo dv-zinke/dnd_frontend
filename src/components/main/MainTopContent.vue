@@ -1,7 +1,7 @@
 <template>
     <div class="top_content">
-        <div class="ml-2 mt-5">
-            <img src="@/assets/logo.png">
+        <div class="ml-5 mt-5">
+            <img src="@/assets/logo.png" class="logo">
         </div>
 
         <div class="main_imag">
@@ -23,6 +23,9 @@
         height: 270px;
         position: relative;
         overflow: hidden;
+        .logo {
+            width:50px
+        }
         .bell_icon {
             position: absolute;
             top: 10px;
