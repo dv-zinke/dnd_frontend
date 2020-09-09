@@ -1,12 +1,14 @@
 <template>
     <div>
-        현재 준비중인 페이지 입니다.
+        <community />
     </div>
 </template>
 
 <script>
+    import Community from "../components/community/Community";
     export default {
-        name: "CommunityPage"
+        name: "CommunityPage",
+        components: {Community}
     }
 </script>
 
