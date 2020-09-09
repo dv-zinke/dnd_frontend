@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="modal" persistent max-width="290">
+    <v-dialog v-model="modal" persistent max-width="320">
         <v-card>
             <v-card-title class="headline">프로필 사진 변경</v-card-title>
             <v-card-text>
@@ -38,8 +38,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="green darken-1" text @click="close">닫기</v-btn>
-                <v-btn color="green darken-1" text @click="onChange">수정</v-btn>
+                <v-btn color="#39E5B6" outlined class="close-btn" @click="close">다음에 할께요:(</v-btn>
+                <v-btn color="#39E5B6" class="ok-btn" @click="onChange">수정</v-btn>
 
             </v-card-actions>
         </v-card>
@@ -98,6 +98,21 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    .close-btn {
+        color:#757575 !important;
+        width:47%;
+        height: 50px !important;
+        border-color: #39E5B6;
+        border-radius: 10px;
+    }
+    .ok-btn {
+        color:white !important;
+        width:47%;
+        height: 50px !important;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 10px;
+    }
 
 </style>
