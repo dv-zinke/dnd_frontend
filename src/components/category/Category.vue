@@ -48,7 +48,10 @@
                             indeterminate
                     ></v-progress-circular>
                 </v-container>
-                <v-row class="category-list" dense v-else>
+                <v-row class="category-list"
+                       dense
+                       v-else
+                >
                     <v-col cols="12" v-if="contents.length === 0">
                         <div>
                             <span class="text-center">
@@ -69,10 +72,10 @@
 
                             <v-list-item class="grid_card_list_item">
                                 <v-list-item-avatar
-                                        v-if="content.document.last_version.contributer"
-                                        class="grid_card_avatar justify-center"
                                         :color="content.document.last_version.contributer.avatar_color"
-                                        height="33">
+                                        class="grid_card_avatar justify-center"
+                                        height="33"
+                                        v-if="content.document.last_version.contributer">
                                     <v-img :src="content.document.last_version.contributer.avatar_image_url"
                                            v-if="content.document.last_version.contributer.avatar_image_url"></v-img>
                                     <span class="white--text" v-else>
@@ -116,6 +119,11 @@
                 </v-row>
             </v-container>
         </v-container>
+        <div
+                infinite-scroll-disabled="busy"
+                infinite-scroll-distance="0"
+                v-infinite-scroll="loadMore"
+        ></div>
     </v-container>
 </template>
 
@@ -133,10 +141,12 @@
         },
         data() {
             return {
-                size: 12,
+                size: 6,
                 page: 0,
                 contents: [],
-                isLoad: false
+                isLoad: false,
+                busy: false
+
             }
         },
         mounted() {
@@ -158,6 +168,19 @@
                         this.isLoad = true;
                     })
 
+            },
+            loadMore(){
+                if (this.isLast || !this.isLoad) return;
+                this.busy = true;
+                this.page = this.page + 1;
+                WriteApi().getDocumentHashtagByHashtag(this.title, this.page, this.size)
+                    .then(res => {
+                        this.contents = this.contents.concat(res.data.content);
+                        this.isLast = res.data.last;
+                        this.busy = false;
+                    })
+                    .finally(() => {
+                    })
             }
         },
         computed: {

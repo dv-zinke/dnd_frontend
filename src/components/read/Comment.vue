@@ -3,9 +3,6 @@
         <span class="font-weight-bold">댓글 {{totalElements}}</span>
         <div v-if="isInit">
             <div
-                    infinite-scroll-disabled="busy"
-                    infinite-scroll-distance="50"
-                    v-infinite-scroll="loadMore"
             >
                 <v-container
                         :key="item.id"
@@ -81,6 +78,12 @@
                     v-show="isLoading"
             ></v-progress-circular>
         </div>
+        <div
+                infinite-scroll-disabled="busy"
+                infinite-scroll-distance="0"
+                v-infinite-scroll="loadMore"
+                infinite-scroll-throttle-delay="1000"
+        ></div>
     </v-container>
 </template>
 
@@ -101,10 +104,10 @@
         data() {
             return {
                 data: [],
-                busy: false,
+                busy: true,
                 users: [],
                 page: 0,
-                size: 10,
+                size: 6,
                 isLast: false,
                 isLoading: false,
                 isInit: false,
@@ -127,7 +130,7 @@
                 this.page = this.page + 1;
                 WriteApi().getCommentByDocumentId(this.documentId, this.page, this.size)
                     .then(res => {
-                        this.data.concat(res.data.content);
+                        this.data = this.data.concat(res.data.content);
                         this.isLast = res.data.last;
                         this.busy = false;
                     })
@@ -151,6 +154,7 @@
                     .finally(() => {
                         this.isLoading = false;
                         this.isInit = true;
+                        this.busy = false;
                     })
             },
             getSelectUser(userId){
