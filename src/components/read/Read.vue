@@ -60,8 +60,6 @@
                     .then(res =>{
                         this.viewerText += res.data;
                         this.isLoad =true;
-                        console.log(this.viewerText)
-
                     })
 
             },
