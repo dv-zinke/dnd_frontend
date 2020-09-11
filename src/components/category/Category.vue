@@ -141,7 +141,7 @@
         },
         data() {
             return {
-                size: 6,
+                size: 8,
                 page: 0,
                 contents: [],
                 isLoad: false,

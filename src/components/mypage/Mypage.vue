@@ -77,8 +77,11 @@
         </v-container>
         <v-container class="pa-0 move-in-container">
             <v-container class="px-2 py-6">
-                <span>
+                <span v-if="!(user.move_at && user.house_name)">
                     혹시 오늘 입주하신지 몇 일째 인가요?
+                </span>
+                <span v-else>
+                    {{user.house_name}}와 함께한지 {{getDiffDate(user.move_at)}}일째 되는날!
                 </span>
                 <v-btn text class="float-right confirm-btn pa-0" @click="moveModalOpen">
                     확인하기
@@ -111,7 +114,7 @@
             <v-btn class="mx-auto" color="error" @click="logout">로그아웃</v-btn>
         </v-container>
         <avatar-change-modal :user-id="user.id" ref="avatarChangeModal"/>
-        <move-date-change-modal ref="moveModal"></move-date-change-modal>
+        <move-date-change-modal  :user-id="user.id" ref="moveModal"></move-date-change-modal>
         <v-snackbar
                 :top="true"
                 v-model="modalAlert"
@@ -137,6 +140,7 @@
     import AvatarChangeModal from "./modal/AvatarChangeModal";
     import Cookies from 'js-cookie'
     import MoveDateChangeModal from "./modal/MoveDateChangeModal";
+    import moment from 'moment';
 
     export default {
         name: "Mypage",
@@ -159,6 +163,13 @@
             },
             openModalAlert(){
                 this.modalAlert = true;
+            },
+            getDiffDate(date) {
+                const now = moment(new Date()); //todays date
+                const end = moment(date); // another date
+                const duration = moment.duration(now.diff(end));
+                const days = duration.asDays();
+                return Math.floor(days);
             }
 
         },

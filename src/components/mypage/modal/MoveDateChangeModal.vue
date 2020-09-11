@@ -44,6 +44,7 @@
                     <br>
                     <span class="font-weight-bold">집 별명 정하기</span>
                     <v-text-field
+                            v-model="houseName"
                             placeholder="3글자 이상 입력 / 특수문자 제외"
                     ></v-text-field>
                 </div>
@@ -51,7 +52,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn @click="close" color="#39E5B6" outlined class="close-btn">다음에 할께요:(</v-btn>
-                <v-btn color="#39E5B6" class="ok-btn" >입력 완료</v-btn>
+                <v-btn color="#39E5B6" class="ok-btn" @click="postData">입력 완료</v-btn>
 
             </v-card-actions>
         </v-card>
@@ -59,17 +60,26 @@
 </template>
 
 <script>
+    import UserApi from "../../api/UserApi";
+
     export default {
         name: "MoveDateChangeModal",
+        props: {
+            userId: {
+            },
+        },
         data() {
             return {
                 modal: false,
                 date: null,
                 menu: false,
+                houseName:""
             }
         },
         methods: {
             open() {
+                this.date = null;
+                this.houseName = "";
                 this.modal = true
             },
             close() {
@@ -78,6 +88,12 @@
             save (date) {
                 this.$refs.menu.save(date)
             },
+            postData () {
+                UserApi().moveDataChange(this.userId, this.date, this.houseName).then(res =>{
+                    this.modal = false;
+                    this.$store.commit('setUser', res.data);
+                });
+            }
         },
         watch: {
             menu (val) {

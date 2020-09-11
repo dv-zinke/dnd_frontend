@@ -38,6 +38,10 @@ class UserApi {
         })
     }
 
+    moveDataChange(userId, moveAt, houseName) {
+        return this.http.post(`/move/${userId}?move_at=${moveAt}&house_name=${houseName}`);
+    }
+
 }
 
 
