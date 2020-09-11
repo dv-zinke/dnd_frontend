@@ -46,6 +46,7 @@
                 ></v-progress-circular>
             </div>
             <v-text-field
+                    v-if="user"
                     :append-outer-icon="comment ? 'mdi-send' : 'mdi-pencil-box'"
                     :loading="!isCreated"
                     @click:append-outer="createComment"
